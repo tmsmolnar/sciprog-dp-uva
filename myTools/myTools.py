@@ -1,18 +1,20 @@
 import pandas as pd
+import seaborn as sns
 from requests import get
 from bs4 import BeautifulSoup
-from bokeh.io import output_notebook, show
-from bokeh.plotting import figure
-from bokeh.models import ColumnDataSource, CategoricalColorMapper, HoverTool
-from bokeh.palettes import Category20b_20
-import seaborn as sns
 import matplotlib.pyplot as plt
+from bokeh.plotting import figure
+from bokeh.palettes import Category20b_20
+from bokeh.io import output_notebook, show
+from bokeh.models import ColumnDataSource, CategoricalColorMapper, HoverTool
+
 
 
 def readDataset(filename):
 
     dataFrame = pd.read_excel(filename)
     #dataFrame['Date'] = pd.to_datetime(dataFrame['Date'])
+    #Commented out because busiestDay() requires the original date format
 
     return dataFrame
 
@@ -87,7 +89,6 @@ def mostWatchedGenre(dataFrame):
 def busiestDay(dataFrame):
 
     dataFrameDailyCounts = episodePerDay(dataFrame)
-
     top20Day = dataFrameDailyCounts.index[0:21]
     top20Day = list(top20Day)
     top20DayCounts = dataFrameDailyCounts['Count'][0:21]
@@ -100,8 +101,7 @@ def busiestDay(dataFrame):
 
 def mostWatchedType(dataFrame):
 
-    dataFrameTypeCount = titleType(dataFrame)
-    
+    dataFrameTypeCount = titleType(dataFrame)    
     watchedType = list(dataFrameTypeCount.index)
 
     p = figure(plot_width=1200, plot_height=800,
@@ -117,11 +117,8 @@ def scrapeBreakingBadRatings():
     breakingBadRatings = []
 
     for season in range(1,6):
-
         seasonHTML = get("https://www.imdb.com/title/tt0903747/episodes?season=" + str(season))
-
         pageHTML = BeautifulSoup(seasonHTML.text, 'html.parser')
-
         episodes = pageHTML.find_all('div', {'class':'info'} )
 
         for ep in episodes:
@@ -140,11 +137,8 @@ def scrapeHomelandRatings():
     homelandRatings = []
     
     for season in range(1, 9):
-
         seasonHTML = get("https://www.imdb.com/title/tt1796960/episodes?season=" + str(season))
-
         pageHTML = BeautifulSoup(seasonHTML.text, 'html.parser')
-
         episodes = pageHTML.find_all('div', {'class': 'info'})
 
         for ep in episodes:
@@ -163,9 +157,7 @@ def heatMapBreakingBad():
     breakingBadRatings = scrapeBreakingBadRatings()
     breakingBadHeatMap = breakingBadRatings.pivot("episode", "season", "userRatings")
     plt.figure(figsize=(10, 9))
-    ax = sns.heatmap(breakingBadHeatMap, cmap="YlGnBu", annot=True)
-
-    
+    ax = sns.heatmap(breakingBadHeatMap, cmap="YlGnBu", annot=True)    
 
 def heatMapHomeland():
     
