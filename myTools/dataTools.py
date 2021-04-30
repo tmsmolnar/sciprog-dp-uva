@@ -6,7 +6,7 @@
 import pandas as pd
 
 
-def readDataset(filename):
+def readNetflixDataset(filename):
 
     dataFrame = pd.read_excel(filename)
     #dataFrame['Date'] = pd.to_datetime(dataFrame['Date'])
