@@ -28,6 +28,9 @@ def watchingHabit(dataFrame):
     source = ColumnDataSource({
         'x': dataFrame['Date'],
         'Title': dataFrame['Title'],
+        'Season': dataFrame['Season'],
+        'Episode_title': dataFrame['Episode title'],
+        'Episode_second_title': dataFrame['Episode second title'],
         'Genre': dataFrame['Genre'],
         'Type': dataFrame['Series / Movie'],
         'index': dataFrame.index
@@ -37,6 +40,9 @@ def watchingHabit(dataFrame):
     hover = HoverTool(
         tooltips=[("Date", "@x{%F}"),
                   ("Title", "@Title"),
+                  ("Season", "@Season"),
+                  ("Episode title", "@Episode_title"),
+                  ("Episode second title", "@Episode_second_title"),
                   ("Genre", "@Genre"),
                   ('Type', '@Type'),
                   ("Overall count", "@index")],

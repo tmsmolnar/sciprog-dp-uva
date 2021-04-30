@@ -9,8 +9,12 @@ import pandas as pd
 def readNetflixDataset(filename):
 
     dataFrame = pd.read_excel(filename)
-    #dataFrame['Date'] = pd.to_datetime(dataFrame['Date'])
-    #Commented out because busiestDay() requires the original date format
+    dataFrame = dataFrame.rename(columns={'Title':'Original Title'})
+    dataFrame = dataFrame.join(dataFrame['Original Title'].str.split(':', expand=True).add_prefix('Original Title'))
+    dataFrame = dataFrame.rename(columns={'Original Title0': 'Title'})
+    dataFrame = dataFrame.rename(columns={'Original Title1': 'Season'})
+    dataFrame = dataFrame.rename(columns={'Original Title2': 'Episode title'})
+    dataFrame = dataFrame.rename(columns={'Original Title3': 'Episode second title'})
 
     return dataFrame
 
