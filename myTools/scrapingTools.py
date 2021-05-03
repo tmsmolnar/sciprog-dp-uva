@@ -4,6 +4,7 @@
 # scrapingTools.py
 
 import pandas as pd
+import requests
 from requests import get
 from bs4 import BeautifulSoup
 
@@ -54,3 +55,36 @@ def scrapeHomelandRatings():
     dataFrame = dataFrame.fillna(0)
 
     return dataFrame
+
+def scrapeMovieLengths():
+
+    ### Not yet working ###
+
+    movieLengths = []
+
+    moviesHTML = 'https://www.imdb.com/list/ls500759439/'
+    response = requests.get(moviesHTML)
+    html = response.content
+    pageHTML = BeautifulSoup(html, 'html.parser')
+    
+    movies = pageHTML.find_all('div', {'class':'lister-item mode-detail'})
+
+    for movie in movies:
+
+        title = movie.find('h3', {'class': 'lister-item-header'})
+        title = title.text.split("\n")
+        
+        runtime = movie.find('span', {'class': 'runtime'})
+        runtime = runtime.text.split(" min")
+
+        data = [str(title[2]), int(runtime[0])]
+
+        movieLengths.append(data)
+
+    dataFrame = pd.DataFrame(movieLengths, columns=[
+        'title', 'runtime'])
+    dataFrame = dataFrame.fillna(0)
+
+    return dataFrame
+            
+

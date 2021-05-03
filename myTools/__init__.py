@@ -4,5 +4,5 @@
 # __init__.py
 
 from .dataTools import readNetflixDataset, episodePerDay, titlePerGenre, titleType
-from .scrapingTools import scrapeBreakingBadRatings, scrapeHomelandRatings
+from .scrapingTools import scrapeBreakingBadRatings, scrapeHomelandRatings, scrapeMovieLengths
 from .visualizationTools import watchingHabit, mostWatchedGenre, mostWatchedType, busiestDay, heatMapBreakingBad, heatMapHomeland
