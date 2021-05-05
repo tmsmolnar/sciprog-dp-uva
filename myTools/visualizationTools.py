@@ -53,6 +53,10 @@ def watchingHabit(dataFrame):
     p.circle(x='x', y='index', source=source, size=5,
              color=dict(field='Genre', transform=colorMapper))
 
+    p.title.text = 'The number of titles I watched on Netflix, since the beginning of my subscription'
+    p.xaxis.axis_label = 'Date'
+    p.yaxis.axis_label = 'Number of titles'
+
     return show(p)
 
 
@@ -64,6 +68,10 @@ def mostWatchedGenre(dataFrame):
     p = figure(plot_width=1200, plot_height=800,
                x_range=watchedGenres, y_range=(0, 750))
     p.vbar(x=watchedGenres, top=dataFrameGenreCount.Count, width=0.9)
+
+    p.title.text = 'My most watched genres on Netflix'
+    p.xaxis.axis_label = 'Genres'
+    p.yaxis.axis_label = 'Number of titles'
 
     return show(p)
 
@@ -79,6 +87,10 @@ def busiestDay(dataFrame):
                x_range=top20Day, y_range=(0, 15))
     p.vbar(x=top20Day, top=top20DayCounts, width=0.9)
 
+    p.title.text = 'The days I watched most titles on'
+    p.xaxis.axis_label = 'Date'
+    p.yaxis.axis_label = 'Number of titles'
+
     return show(p)
 
 
@@ -91,6 +103,10 @@ def mostWatchedType(dataFrame):
                x_range=watchedType, y_range=(0, 1350))
     p.vbar(x=watchedType, top=dataFrameTypeCount.Count, width=0.9)
 
+    p.title.text = 'The distribution of series and movies in my viewing history'
+    p.xaxis.axis_label = 'Series / Movies'
+    p.yaxis.axis_label = 'Number of titles'
+
     return show(p)
 
 
@@ -100,6 +116,7 @@ def heatMapBreakingBad():
     breakingBadHeatMap = breakingBadRatings.pivot(
         "episode", "season", "userRatings")
     plt.figure(figsize=(10, 9))
+    plt.title('Ratings of Breaking Bad episodes')
     ax = sns.heatmap(breakingBadHeatMap, cmap="YlGnBu", annot=True)
 
 
@@ -108,4 +125,5 @@ def heatMapHomeland():
     homelandRatings = scrapeHomelandRatings()
     homelandHeatMap = homelandRatings.pivot("episode", "season", "userRatings")
     plt.figure(figsize=(10, 9))
+    plt.title('Ratings of Homeland episodes')
     ax = sns.heatmap(homelandHeatMap, cmap="YlGnBu", annot=True)
