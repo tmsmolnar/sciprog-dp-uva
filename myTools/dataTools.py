@@ -47,3 +47,16 @@ def titleType(dataFrame):
         columns={'Series / Movie': 'Count'})
 
     return dataFrameTypeCount
+
+def titleTypeUnique(dataFrame):
+
+    dataFrameTypeUniqueSeries = dataFrame.loc[dataFrame['Series / Movie'] == 'Series']
+    dataFrameTypeUniqueSeries = dataFrameTypeUniqueSeries['Title'].unique()
+
+    dataFrameTypeUniqueMovie = dataFrame.loc[dataFrame['Series / Movie'] == 'Movie']
+    dataFrameTypeUniqueMovie = dataFrameTypeUniqueMovie['Title'].unique()
+
+    dataUniqueTitles = [['Series', len(dataFrameTypeUniqueSeries)], ['Movies', len(dataFrameTypeUniqueMovie)]]
+    dataFrameTypeUniqueTitles = pd.DataFrame(dataUniqueTitles, columns=['Type', 'Count'])
+
+    return dataFrameTypeUniqueTitles

@@ -3,6 +3,6 @@
 # Final Project
 # __init__.py
 
-from .dataTools import readNetflixDataset, episodePerDay, titlePerGenre, titleType
+from .dataTools import readNetflixDataset, episodePerDay, titlePerGenre, titleType, titleTypeUnique
 from .scrapingTools import scrapeBreakingBadRatings, scrapeHomelandRatings, scrapeMovieLengths
 from .visualizationTools import watchingHabit, mostWatchedGenre, mostWatchedType, busiestDay, heatMapBreakingBad, heatMapHomeland
