@@ -11,7 +11,7 @@ from bokeh.palettes import Category20b_20
 from bokeh.io import output_notebook, show
 from bokeh.models import ColumnDataSource, CategoricalColorMapper, HoverTool
 
-from myTools import titlePerGenre, episodePerDay, titleType, titleTypeUnique
+from myTools import titlePerGenre, episodePerDay, titleType, titleTypeUnique()
 from myTools import scrapeBreakingBadRatings, scrapeHomelandRatings
 
 
@@ -109,7 +109,6 @@ def mostWatchedType(dataFrame):
 
     return show(p)
 
-
 def mostWatchedTypeUnique(dataFrame):
 
     dataFrameTypeUnique = titleTypeUnique(dataFrame)
@@ -119,11 +118,13 @@ def mostWatchedTypeUnique(dataFrame):
 
     p.vbar(x=dataFrameTypeUnique.Type, top=dataFrameTypeUnique.Count, width=0.9)
 
-    p.title.text = 'The distribution of unique series and movies in my viewing history'
+    p.title.text = 'The distribution of series and movies in my viewing history'
     p.xaxis.axis_label = 'Series / Movies'
-    p.yaxis.axis_label = 'Number of unique titles'
+    p.yaxis.axis_label = 'Number of titles'
 
     return show(p)
+
+
 
 
 def heatMapBreakingBad():

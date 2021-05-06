@@ -5,4 +5,4 @@
 
 from .dataTools import readNetflixDataset, episodePerDay, titlePerGenre, titleType, titleTypeUnique
 from .scrapingTools import scrapeBreakingBadRatings, scrapeHomelandRatings, scrapeMovieLengths
-from .visualizationTools import watchingHabit, mostWatchedGenre, mostWatchedType, busiestDay, heatMapBreakingBad, heatMapHomeland
+from .visualizationTools import watchingHabit, mostWatchedGenre, mostWatchedType, mostWatchedTypeUnique, busiestDay, heatMapBreakingBad, heatMapHomeland
