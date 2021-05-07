@@ -57,9 +57,9 @@ def scrapeHomelandRatings():
     return dataFrame
 
 
-def scrapeMovieLengths():
+def scrapeMovieRuntime():
 
-    movieLengths = []
+    movieRuntime = []
 
     moviesHTML = 'https://www.imdb.com/list/ls500759439/'
     response = requests.get(moviesHTML)
@@ -78,18 +78,18 @@ def scrapeMovieLengths():
 
         data = [str(title[2]), int(runtime[0])]
 
-        movieLengths.append(data)
+        movieRuntime.append(data)
 
-    dataFrame = pd.DataFrame(movieLengths, columns=[
+    dataFrame = pd.DataFrame(movieRuntime, columns=[
         'title', 'runtime'])
     dataFrame = dataFrame.fillna(0)
 
     return dataFrame
 
 
-def scrapeSeriesLengths():
+def scrapeSeriesRuntime():
 
-    seriesLengths = []
+    seriesRuntime = []
 
     seriesHTML = 'https://www.imdb.com/list/ls500780679/'
     response = requests.get(seriesHTML)
@@ -108,9 +108,9 @@ def scrapeSeriesLengths():
 
         data = [str(title[2]), int(runtime[0])]
 
-        seriesLengths.append(data)
+        seriesRuntime.append(data)
 
-    dataFrame = pd.DataFrame(seriesLengths, columns=[
+    dataFrame = pd.DataFrame(seriesRuntime, columns=[
         'title', 'runtime'])
     dataFrame = dataFrame.fillna(0)
 

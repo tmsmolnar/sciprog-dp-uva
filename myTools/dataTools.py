@@ -4,6 +4,7 @@
 # dataTools.py
 
 import pandas as pd
+from myTools import scrapeSeriesRuntime, scrapeMovieRuntime
 
 
 def readNetflixDataset(filename):
@@ -60,3 +61,44 @@ def titleTypeUnique(dataFrame):
     dataFrameTypeUniqueTitles = pd.DataFrame(dataUniqueTitles, columns=['Type', 'Count'])
 
     return dataFrameTypeUniqueTitles
+
+def seriesRuntime(dataFrame):
+
+    onlySeries = dataFrame.loc[dataFrame['Series / Movie'] == 'Series']
+    onlySeries = onlySeries['Title'].unique()
+    dfOnlySeries = pd.DataFrame(data=onlySeries, columns=['Title'])
+
+    dfSeriesRuntime = scrapeSeriesRuntime()
+
+    newRow = pd.DataFrame({'title': 'Love is Blind', 'runtime': 50}, index=[17])
+    dfSeriesRuntime = dfSeriesRuntime.append(newRow, ignore_index=False)
+    dfSeriesRuntime = dfSeriesRuntime.sort_index().reset_index(drop=True)
+    
+    dfSeriesRuntime['Original Title'] = dfOnlySeries[['Title']].copy()
+
+    dfSeriesRuntime.loc[dfSeriesRuntime['Original Title']
+                    == 'Jeffrey Epstein', 'runtime'] = 55
+    dfSeriesRuntime.loc[dfSeriesRuntime['Original Title']
+                    == 'Lupin', 'runtime'] = 45
+    dfSeriesRuntime.loc[dfSeriesRuntime['Original Title']
+                    == "The Queen's Gambit", 'runtime'] = 55
+    dfSeriesRuntime.loc[dfSeriesRuntime['Original Title']
+                    == 'Tiger King', 'runtime'] = 45
+    dfSeriesRuntime.loc[dfSeriesRuntime['Original Title']
+                    == 'Planet Earth', 'runtime'] = 50
+    dfSeriesRuntime.loc[dfSeriesRuntime['Original Title']
+                    == 'The Blue Planet', 'runtime'] = 50
+    dfSeriesRuntime.loc[dfSeriesRuntime['Original Title']
+                    == 'Money Heist', 'runtime'] = 50
+
+    return dfSeriesRuntime
+
+
+def moviesRuntime(dataFrame):
+
+    dfOnlyMovies = dataFrame.loc[dataFrame['Series / Movie'] == 'Movie']
+    dfMovieRuntime = scrapeMovieRuntime()
+    dfOnlyMovies.index = dfMovieRuntime.index
+    dfMovieRuntime['Original Title'] = dfOnlyMovies[['Original Title']].copy()
+    
+    return dfMovieRuntime
