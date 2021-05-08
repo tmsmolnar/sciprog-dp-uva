@@ -70,26 +70,27 @@ def seriesData(dataFrame):
 
     dfSeriesData = scrapeSeries()
 
-    newRow = pd.DataFrame({'scraped title': 'Love is Blind', 'runtime': 50, 'S/M': 'Series', 'genre':'Reality-TV'}, index=[17])
+    newRow = pd.DataFrame({'scraped title': 'Love is Blind', 'runtime': 50,
+                           'S/M': 'Series', 'genre': 'Reality-TV'}, index=[17])
     dfSeriesData = dfSeriesData.append(newRow, ignore_index=False)
     dfSeriesData = dfSeriesData.sort_index().reset_index(drop=True)
-    
+
     dfSeriesData['Original Title'] = dfOnlySeries[['Title']].copy()
 
     dfSeriesData.loc[dfSeriesData['Original Title']
-                    == 'Jeffrey Epstein', 'runtime'] = 55
+                     == 'Jeffrey Epstein', 'runtime'] = 55
     dfSeriesData.loc[dfSeriesData['Original Title']
-                    == 'Lupin', 'runtime'] = 45
+                     == 'Lupin', 'runtime'] = 45
     dfSeriesData.loc[dfSeriesData['Original Title']
-                    == "The Queen's Gambit", 'runtime'] = 55
+                     == "The Queen's Gambit", 'runtime'] = 55
     dfSeriesData.loc[dfSeriesData['Original Title']
-                    == 'Tiger King', 'runtime'] = 45
+                     == 'Tiger King', 'runtime'] = 45
     dfSeriesData.loc[dfSeriesData['Original Title']
-                    == 'Planet Earth', 'runtime'] = 50
+                     == 'Planet Earth', 'runtime'] = 50
     dfSeriesData.loc[dfSeriesData['Original Title']
-                    == 'The Blue Planet', 'runtime'] = 50
+                     == 'The Blue Planet', 'runtime'] = 50
     dfSeriesData.loc[dfSeriesData['Original Title']
-                    == 'Money Heist', 'runtime'] = 50
+                     == 'Money Heist', 'runtime'] = 50
 
     return dfSeriesData
 
@@ -100,7 +101,7 @@ def moviesData(dataFrame):
     dfMovieData = scrapeMovies()
     dfOnlyMovies.index = dfMovieData.index
     dfMovieData['Original Title'] = dfOnlyMovies[['Original Title']].copy()
-    
+
     return dfMovieData
 
 
