@@ -102,3 +102,41 @@ def moviesData(dataFrame):
     dfMovieData['Original Title'] = dfOnlyMovies[['Original Title']].copy()
     
     return dfMovieData
+
+
+def concatSeriesMovies(dataFrame1, dataFrame2):
+
+    concatedDataFrame = pd.concat([dataFrame1, dataFrame2], ignore_index=True)
+
+    return concatedDataFrame
+
+
+def cleanDataFrame(dataFrame):
+
+    cleanDataFrame = dataFrame[['Date', 'Title', 'Season', 'Episode title', 'Episode second title']]
+
+    return cleanDataFrame
+
+
+def mapRuntime(dataFrame1, dataFrame2):
+    
+    dataFrame1['Runtime'] = dataFrame1.Title.map(
+        dataFrame2.set_index('Original Title')['runtime'].to_dict())
+
+    return dataFrame1
+
+
+def mapGenre(dataFrame1, dataFrame2):
+    
+    dataFrame1['Genre'] = dataFrame1.Title.map(
+        dataFrame2.set_index('Original Title')['genre'].to_dict())
+
+    return dataFrame1
+
+
+def mapType(dataFrame1, dataFrame2):
+    
+    dataFrame1['S/M'] = dataFrame1.Title.map(
+        dataFrame2.set_index('Original Title')['S/M'].to_dict())
+
+    return dataFrame1
