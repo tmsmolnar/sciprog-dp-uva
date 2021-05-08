@@ -4,7 +4,7 @@
 # dataTools.py
 
 import pandas as pd
-from myTools import scrapeSeriesRuntime, scrapeMovieRuntime
+from myTools import scrapeSeries, scrapeMovies
 
 
 def readNetflixDataset(filename):
@@ -62,43 +62,43 @@ def titleTypeUnique(dataFrame):
 
     return dataFrameTypeUniqueTitles
 
-def seriesRuntime(dataFrame):
+def seriesData(dataFrame):
 
     onlySeries = dataFrame.loc[dataFrame['Series / Movie'] == 'Series']
     onlySeries = onlySeries['Title'].unique()
     dfOnlySeries = pd.DataFrame(data=onlySeries, columns=['Title'])
 
-    dfSeriesRuntime = scrapeSeriesRuntime()
+    dfSeriesData = scrapeSeries()
 
-    newRow = pd.DataFrame({'title': 'Love is Blind', 'runtime': 50}, index=[17])
-    dfSeriesRuntime = dfSeriesRuntime.append(newRow, ignore_index=False)
-    dfSeriesRuntime = dfSeriesRuntime.sort_index().reset_index(drop=True)
+    newRow = pd.DataFrame({'scraped title': 'Love is Blind', 'runtime': 50, 'S/M': 'Series', 'genre':'Reality-TV'}, index=[17])
+    dfSeriesData = dfSeriesData.append(newRow, ignore_index=False)
+    dfSeriesData = dfSeriesData.sort_index().reset_index(drop=True)
     
-    dfSeriesRuntime['Original Title'] = dfOnlySeries[['Title']].copy()
+    dfSeriesData['Original Title'] = dfOnlySeries[['Title']].copy()
 
-    dfSeriesRuntime.loc[dfSeriesRuntime['Original Title']
+    dfSeriesData.loc[dfSeriesData['Original Title']
                     == 'Jeffrey Epstein', 'runtime'] = 55
-    dfSeriesRuntime.loc[dfSeriesRuntime['Original Title']
+    dfSeriesData.loc[dfSeriesData['Original Title']
                     == 'Lupin', 'runtime'] = 45
-    dfSeriesRuntime.loc[dfSeriesRuntime['Original Title']
+    dfSeriesData.loc[dfSeriesData['Original Title']
                     == "The Queen's Gambit", 'runtime'] = 55
-    dfSeriesRuntime.loc[dfSeriesRuntime['Original Title']
+    dfSeriesData.loc[dfSeriesData['Original Title']
                     == 'Tiger King', 'runtime'] = 45
-    dfSeriesRuntime.loc[dfSeriesRuntime['Original Title']
+    dfSeriesData.loc[dfSeriesData['Original Title']
                     == 'Planet Earth', 'runtime'] = 50
-    dfSeriesRuntime.loc[dfSeriesRuntime['Original Title']
+    dfSeriesData.loc[dfSeriesData['Original Title']
                     == 'The Blue Planet', 'runtime'] = 50
-    dfSeriesRuntime.loc[dfSeriesRuntime['Original Title']
+    dfSeriesData.loc[dfSeriesData['Original Title']
                     == 'Money Heist', 'runtime'] = 50
 
-    return dfSeriesRuntime
+    return dfSeriesData
 
 
-def moviesRuntime(dataFrame):
+def moviesData(dataFrame):
 
     dfOnlyMovies = dataFrame.loc[dataFrame['Series / Movie'] == 'Movie']
-    dfMovieRuntime = scrapeMovieRuntime()
-    dfOnlyMovies.index = dfMovieRuntime.index
-    dfMovieRuntime['Original Title'] = dfOnlyMovies[['Original Title']].copy()
+    dfMovieData = scrapeMovies()
+    dfOnlyMovies.index = dfMovieData.index
+    dfMovieData['Original Title'] = dfOnlyMovies[['Original Title']].copy()
     
-    return dfMovieRuntime
+    return dfMovieData
