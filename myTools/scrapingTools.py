@@ -57,9 +57,9 @@ def scrapeHomelandRatings():
     return dataFrame
 
 
-def scrapeMovieRuntime():
+def scrapeMovies():
 
-    movieRuntime = []
+    moviesData = []
 
     moviesHTML = 'https://www.imdb.com/list/ls500759439/'
     response = requests.get(moviesHTML)
@@ -76,20 +76,24 @@ def scrapeMovieRuntime():
         runtime = movie.find('span', {'class': 'runtime'})
         runtime = runtime.text.split(" min")
 
-        data = [str(title[2]), int(runtime[0])]
+        genre = movie.find('span', {'class':'genre'})
+        genre = genre.text.split(",")
+        genre = genre[0].split("\n")
 
-        movieRuntime.append(data)
+        data = [str(title[2]), int(runtime[0]), str(genre[1]), 'Movie']
 
-    dataFrame = pd.DataFrame(movieRuntime, columns=[
-        'title', 'runtime'])
+        moviesData.append(data)
+
+    dataFrame = pd.DataFrame(moviesData, columns=[
+        'scraped title', 'runtime', 'genre', 'S/M'])
     dataFrame = dataFrame.fillna(0)
 
     return dataFrame
 
 
-def scrapeSeriesRuntime():
+def scrapeSeries():
 
-    seriesRuntime = []
+    seriesData = []
 
     seriesHTML = 'https://www.imdb.com/list/ls500780679/'
     response = requests.get(seriesHTML)
@@ -106,12 +110,16 @@ def scrapeSeriesRuntime():
         runtime = s.find('span', {'class': 'runtime'})
         runtime = runtime.text.split(" min")
 
-        data = [str(title[2]), int(runtime[0])]
+        genre = s.find('span', {'class': 'genre'})
+        genre = genre.text.split(",")
+        genre = genre[0].split("\n")
 
-        seriesRuntime.append(data)
+        data = [str(title[2]), int(runtime[0]), str(genre[1]), 'Series']
 
-    dataFrame = pd.DataFrame(seriesRuntime, columns=[
-        'title', 'runtime'])
+        seriesData.append(data)
+
+    dataFrame = pd.DataFrame(seriesData, columns=[
+        'scraped title', 'runtime', 'genre', 'S/M'])
     dataFrame = dataFrame.fillna(0)
 
     return dataFrame
