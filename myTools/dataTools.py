@@ -75,21 +75,21 @@ def seriesData(dataFrame):
     dfSeriesData = dfSeriesData.append(newRow, ignore_index=False)
     dfSeriesData = dfSeriesData.sort_index().reset_index(drop=True)
 
-    dfSeriesData['Original Title'] = dfOnlySeries[['Title']].copy()
+    dfSeriesData['Title'] = dfOnlySeries[['Title']].copy()
 
-    dfSeriesData.loc[dfSeriesData['Original Title']
+    dfSeriesData.loc[dfSeriesData['Title']
                      == 'Jeffrey Epstein', 'runtime'] = 55
-    dfSeriesData.loc[dfSeriesData['Original Title']
+    dfSeriesData.loc[dfSeriesData['Title']
                      == 'Lupin', 'runtime'] = 45
-    dfSeriesData.loc[dfSeriesData['Original Title']
+    dfSeriesData.loc[dfSeriesData['Title']
                      == "The Queen's Gambit", 'runtime'] = 55
-    dfSeriesData.loc[dfSeriesData['Original Title']
+    dfSeriesData.loc[dfSeriesData['Title']
                      == 'Tiger King', 'runtime'] = 45
-    dfSeriesData.loc[dfSeriesData['Original Title']
+    dfSeriesData.loc[dfSeriesData['Title']
                      == 'Planet Earth', 'runtime'] = 50
-    dfSeriesData.loc[dfSeriesData['Original Title']
+    dfSeriesData.loc[dfSeriesData['Title']
                      == 'The Blue Planet', 'runtime'] = 50
-    dfSeriesData.loc[dfSeriesData['Original Title']
+    dfSeriesData.loc[dfSeriesData['Title']
                      == 'Money Heist', 'runtime'] = 50
 
     return dfSeriesData
@@ -101,6 +101,16 @@ def moviesData(dataFrame):
     dfMovieData = scrapeMovies()
     dfOnlyMovies.index = dfMovieData.index
     dfMovieData['Original Title'] = dfOnlyMovies[['Original Title']].copy()
+
+    list_to_column = []
+
+
+    for i in dfMovieData['Original Title']:
+        i = i.split(':')
+        i = i[0]
+        list_to_column.append(i)
+
+    dfMovieData['Title'] = list_to_column
 
     return dfMovieData
 
@@ -114,7 +124,7 @@ def concatSeriesMovies(dataFrame1, dataFrame2):
 
 def cleanDataFrame(dataFrame):
 
-    cleanDataFrame = dataFrame[['Date', 'Title', 'Season', 'Episode title', 'Episode second title']]
+    cleanDataFrame = dataFrame[['Original Title', 'Date', 'Title', 'Season', 'Episode title', 'Episode second title']]
 
     return cleanDataFrame
 
@@ -122,7 +132,7 @@ def cleanDataFrame(dataFrame):
 def mapRuntime(dataFrame1, dataFrame2):
     
     dataFrame1['Runtime'] = dataFrame1.Title.map(
-        dataFrame2.set_index('Original Title')['runtime'].to_dict())
+        dataFrame2.set_index('Title')['runtime'].to_dict())
 
     return dataFrame1
 
@@ -130,7 +140,7 @@ def mapRuntime(dataFrame1, dataFrame2):
 def mapGenre(dataFrame1, dataFrame2):
     
     dataFrame1['Genre'] = dataFrame1.Title.map(
-        dataFrame2.set_index('Original Title')['genre'].to_dict())
+        dataFrame2.set_index('Title')['genre'].to_dict())
 
     return dataFrame1
 
@@ -138,6 +148,29 @@ def mapGenre(dataFrame1, dataFrame2):
 def mapType(dataFrame1, dataFrame2):
     
     dataFrame1['S/M'] = dataFrame1.Title.map(
-        dataFrame2.set_index('Original Title')['S/M'].to_dict())
+        dataFrame2.set_index('Title')['S/M'].to_dict())
 
     return dataFrame1
+
+
+def addSpentMinutes(dataFrame):
+
+    dataFrame = dataFrame.rename(columns={'S/M': 'Series / Movie'})
+    dataFrame['Spent Minutes'] = 0
+    dataFrame = dataFrame.loc[::-1].reset_index(drop=True)
+
+    for i in range(1, len(dataFrame)):
+        dataFrame.loc[i, 'Spent Minutes'] = dataFrame.loc[i, 'Runtime'] + dataFrame.loc[i-1, 'Spent Minutes']
+
+    return dataFrame
+
+
+def minutesPerDay(dataFrame):
+    pass
+
+def minutesPerGenre(dataFrame):
+    pass
+
+def minutesPerTitleType(dataFrame):
+    pass
+

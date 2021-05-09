@@ -143,3 +143,90 @@ def heatMapHomeland():
     plt.figure(figsize=(10, 9))
     plt.title('Ratings of Homeland episodes')
     ax = sns.heatmap(homelandHeatMap, cmap="YlGnBu", annot=True)
+
+
+
+def watchingHabitMinutes(dataFrame):
+    
+    #dataFrame = dataFrame.loc[::-1].reset_index(drop=True)
+
+    genres = dataFrame['Genre'].unique()
+    genres = list(genres)
+    newgenres = []
+
+    for element in genres:
+        element = str(element)
+        element = element.split(' ')
+        element = element[0]
+        newgenres.append(element)
+
+    colorMapper = CategoricalColorMapper(
+        factors=newgenres, palette=Category20b_20)
+
+    source = ColumnDataSource({
+        'x': dataFrame['Date'],
+        'Title': dataFrame['Title'],
+        'Season': dataFrame['Season'],
+        'Episode_title': dataFrame['Episode title'],
+        'Episode_second_title': dataFrame['Episode second title'],
+        'Genre': dataFrame['Genre'],
+        'Type': dataFrame['Series / Movie'],
+        'Runtime': dataFrame['Runtime'],
+        'SpentMinutes': dataFrame['Spent Minutes'],
+        'index': dataFrame.index
+    })
+
+    tools = "pan, tap, box_select, lasso_select, wheel_zoom, help"
+    hover = HoverTool(
+        tooltips=[("Date", "@x{%F}"),
+                  ("Title", "@Title"),
+                  ("Season", "@Season"),
+                  ("Episode title", "@Episode_title"),
+                  ("Episode second title", "@Episode_second_title"),
+                  ("Genre", "@Genre"),
+                  ('Type', '@Type'),
+                  ('Runtime', '@Runtime'),
+                  ('Overall minutes', '@SpentMinutes'),
+                  ("Overall count", "@index")],
+        formatters={'@x': 'datetime'})
+
+    p = figure(tools=[hover, tools], plot_width=1200,
+               plot_height=800, x_axis_type="datetime", y_range=(0,52000))
+    p.circle(x='x', y='SpentMinutes', source=source, size=5,
+             color=dict(field='Genre', transform=colorMapper))
+
+    p.title.text = 'The number of minutes I spent watching Netflix, since the beginning of my subscription'
+    p.xaxis.axis_label = 'Date'
+    p.yaxis.axis_label = 'Number of minutes spent'
+
+    return show(p)
+
+def mostWatchedGenreMinutes(dataFrame):
+    
+    dataFrameGenreCount = titlePerGenre(dataFrame)
+    watchedGenres = list(dataFrameGenreCount.index)
+
+    newgenres = []
+
+    for element in watchedGenres:
+        element = str(element)
+        element = element.split(' ')
+        element = element[0]
+        newgenres.append(element)
+
+
+    p = figure(plot_width=1200, plot_height=800,
+               x_range=newgenres, y_range=(0, 750))
+    p.vbar(x=newgenres, top=dataFrameGenreCount.Count, width=0.9)
+
+    p.title.text = 'My most watched genres on Netflix'
+    p.xaxis.axis_label = 'Genres'
+    p.yaxis.axis_label = 'Number of titles'
+
+    return show(p)
+
+def busiestDayMinutes(dataFrame):
+    pass
+
+def mostWatchedTypeMinutes(dataFrame):
+    pass
