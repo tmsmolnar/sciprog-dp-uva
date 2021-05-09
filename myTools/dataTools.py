@@ -166,11 +166,35 @@ def addSpentMinutes(dataFrame):
 
 
 def minutesPerDay(dataFrame):
-    pass
+    
+    dataFrame = dataFrame.groupby('Date')['Runtime'].sum()
+    dataFrame = dataFrame.to_frame()
+    dataFrame['Date'] = dataFrame.index
+    dataFrame['Date'] = dataFrame['Date'].dt.strftime('%m/%d/%Y')
+    dataFrame = dataFrame.rename(
+        columns={'Runtime': 'Count'})
+    dataFrame = dataFrame.sort_values(by='Count',ascending=False)
+
+    return dataFrame
 
 def minutesPerGenre(dataFrame):
-    pass
+
+    dataFrame = dataFrame.join(dataFrame['Genre'].str.split(' ', expand=True).add_prefix('Genre clean'))
+    dataFrame = dataFrame.groupby('Genre clean0')['Runtime'].sum()
+    dataFrame = dataFrame.to_frame()
+    dataFrame = dataFrame.rename(
+        columns={'Runtime': 'Count'})
+    dataFrame = dataFrame.sort_values(by='Count', ascending=False)
+
+    return dataFrame
 
 def minutesPerTitleType(dataFrame):
-    pass
+    
+    dataFrame = dataFrame.groupby('Series / Movie')['Runtime'].sum()
+    dataFrame = dataFrame.to_frame()
+    dataFrame = dataFrame.rename(
+        columns={'Runtime': 'Count'})
+    dataFrame = dataFrame.sort_values(by='Count', ascending=False)
+
+    return dataFrame
 

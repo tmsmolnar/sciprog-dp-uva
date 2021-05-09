@@ -11,7 +11,7 @@ from bokeh.palettes import Category20b_20
 from bokeh.io import output_notebook, show
 from bokeh.models import ColumnDataSource, CategoricalColorMapper, HoverTool
 
-from myTools import titlePerGenre, episodePerDay, titleType, titleTypeUnique
+from myTools import titlePerGenre, episodePerDay, titleType, titleTypeUnique, minutesPerTitleType, minutesPerDay, minutesPerGenre
 from myTools import scrapeBreakingBadRatings, scrapeHomelandRatings
 
 
@@ -203,30 +203,47 @@ def watchingHabitMinutes(dataFrame):
 
 def mostWatchedGenreMinutes(dataFrame):
     
-    dataFrameGenreCount = titlePerGenre(dataFrame)
+    dataFrameGenreCount = minutesPerGenre(dataFrame)
     watchedGenres = list(dataFrameGenreCount.index)
 
-    newgenres = []
-
-    for element in watchedGenres:
-        element = str(element)
-        element = element.split(' ')
-        element = element[0]
-        newgenres.append(element)
-
-
     p = figure(plot_width=1200, plot_height=800,
-               x_range=newgenres, y_range=(0, 750))
-    p.vbar(x=newgenres, top=dataFrameGenreCount.Count, width=0.9)
+               x_range=watchedGenres, y_range=(0, 20000))
+    p.vbar(x=watchedGenres, top=dataFrameGenreCount.Count, width=0.9)
 
     p.title.text = 'My most watched genres on Netflix'
     p.xaxis.axis_label = 'Genres'
-    p.yaxis.axis_label = 'Number of titles'
+    p.yaxis.axis_label = 'Number of minutes'
 
     return show(p)
 
 def busiestDayMinutes(dataFrame):
-    pass
+    
+    dataFrameDailyCounts = minutesPerDay(dataFrame)
+    top15Day = dataFrameDailyCounts['Date'][0:16]
+    top15Day = list(top15Day)
+    top15DayCounts = dataFrameDailyCounts['Count'][0:16]
+
+    p = figure(plot_width=1200, plot_height=800,
+               x_range=top15Day, y_range=(0, 700))
+    p.vbar(x=top15Day, top=top15DayCounts, width=0.9)
+
+    p.title.text = 'The days I watched Netflix the most'
+    p.xaxis.axis_label = 'Date'
+    p.yaxis.axis_label = 'Number of minutes'
+
+    return show(p)
 
 def mostWatchedTypeMinutes(dataFrame):
-    pass
+    
+    dataFrameTypeCount = minutesPerTitleType(dataFrame)
+    watchedType = list(dataFrameTypeCount.index)
+
+    p = figure(plot_width=1200, plot_height=800,
+               x_range=watchedType, y_range=(0, 47000))
+    p.vbar(x=watchedType, top=dataFrameTypeCount.Count, width=0.9)
+
+    p.title.text = 'How many minutes I spent watching series and movies'
+    p.xaxis.axis_label = 'Series / Movies'
+    p.yaxis.axis_label = 'Number of minutes'
+
+    return show(p)
