@@ -7,7 +7,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from bokeh.plotting import figure
-from bokeh.palettes import Category20b_20
+from bokeh.palettes import Category20b_13, Category20b_14
 from bokeh.io import output_notebook, show
 from bokeh.models import ColumnDataSource, CategoricalColorMapper, HoverTool
 
@@ -23,7 +23,7 @@ def watchingHabit(dataFrame):
     genres = list(genres)
 
     colorMapper = CategoricalColorMapper(
-        factors=genres, palette=Category20b_20)
+        factors=genres, palette=Category20b_13)
 
     source = ColumnDataSource({
         'x': dataFrame['Date'],
@@ -50,9 +50,10 @@ def watchingHabit(dataFrame):
 
     p = figure(tools=[hover, tools], plot_width=1200,
                plot_height=800, x_axis_type="datetime", y_range=(0, 1400))
-    p.circle(x='x', y='index', source=source, size=5,
+    p.circle(x='x', y='index', source=source, legend_field='Genre', size=5,
              color=dict(field='Genre', transform=colorMapper))
-
+    
+    p.legend.location = 'bottom_right'
     p.title.text = 'The number of titles I watched on Netflix, since the beginning of my subscription'
     p.xaxis.axis_label = 'Date'
     p.yaxis.axis_label = 'Number of titles'
@@ -67,8 +68,12 @@ def mostWatchedGenre(dataFrame):
 
     p = figure(plot_width=1200, plot_height=800,
                x_range=watchedGenres, y_range=(0, 750))
-    p.vbar(x=watchedGenres, top=dataFrameGenreCount.Count, width=0.9)
+    p.vbar(x=watchedGenres, top=dataFrameGenreCount.Count,
+           width=0.9, fill_color='#ed0d0e', line_alpha=0)
 
+    p.background_fill_color = '#0b0106'
+    p.xgrid.grid_line_color = None
+    p.ygrid.grid_line_color = None
     p.title.text = 'My most watched genres on Netflix'
     p.xaxis.axis_label = 'Genres'
     p.yaxis.axis_label = 'Number of titles'
@@ -85,8 +90,12 @@ def busiestDay(dataFrame):
 
     p = figure(plot_width=1200, plot_height=800,
                x_range=top20Day, y_range=(0, 15))
-    p.vbar(x=top20Day, top=top20DayCounts, width=0.9)
+    p.vbar(x=top20Day, top=top20DayCounts, width=0.9,
+           fill_color='#ed0d0e', line_alpha=0)
 
+    p.background_fill_color = '#0b0106'
+    p.xgrid.grid_line_color = None
+    p.ygrid.grid_line_color = None
     p.title.text = 'The days I watched most titles on'
     p.xaxis.axis_label = 'Date'
     p.yaxis.axis_label = 'Number of titles'
@@ -101,8 +110,12 @@ def mostWatchedType(dataFrame):
 
     p = figure(plot_width=1200, plot_height=800,
                x_range=watchedType, y_range=(0, 1350))
-    p.vbar(x=watchedType, top=dataFrameTypeCount.Count, width=0.9)
-
+    p.vbar(x=watchedType, top=dataFrameTypeCount.Count,
+           width=0.9, fill_color='#ed0d0e', line_alpha=0)
+    
+    p.background_fill_color = '#0b0106'
+    p.xgrid.grid_line_color = None
+    p.ygrid.grid_line_color = None
     p.title.text = 'The distribution of series and movies in my viewing history'
     p.xaxis.axis_label = 'Series / Movies'
     p.yaxis.axis_label = 'Number of titles'
@@ -117,8 +130,12 @@ def mostWatchedTypeUnique(dataFrame):
     p = figure(plot_width=1200, plot_height=800,
                x_range=dataFrameTypeUnique.Type, y_range=(0, 60))
 
-    p.vbar(x=dataFrameTypeUnique.Type, top=dataFrameTypeUnique.Count, width=0.9)
+    p.vbar(x=dataFrameTypeUnique.Type, top=dataFrameTypeUnique.Count,
+           width=0.9, fill_color='#ed0d0e', line_alpha=0)
 
+    p.background_fill_color = '#0b0106'
+    p.xgrid.grid_line_color = None
+    p.ygrid.grid_line_color = None
     p.title.text = 'The distribution of unique series and movies in my viewing history'
     p.xaxis.axis_label = 'Series / Movies'
     p.yaxis.axis_label = 'Number of unique titles'
@@ -161,7 +178,7 @@ def watchingHabitMinutes(dataFrame):
         newgenres.append(element)
 
     colorMapper = CategoricalColorMapper(
-        factors=newgenres, palette=Category20b_20)
+        factors=newgenres, palette=Category20b_14)
 
     source = ColumnDataSource({
         'x': dataFrame['Date'],
@@ -192,9 +209,10 @@ def watchingHabitMinutes(dataFrame):
 
     p = figure(tools=[hover, tools], plot_width=1200,
                plot_height=800, x_axis_type="datetime", y_range=(0,52000))
-    p.circle(x='x', y='SpentMinutes', source=source, size=5,
+    p.circle(x='x', y='SpentMinutes', source=source, legend_field='Genre', size=5,
              color=dict(field='Genre', transform=colorMapper))
 
+    p.legend.location = 'bottom_right'
     p.title.text = 'The number of minutes I spent watching Netflix, since the beginning of my subscription'
     p.xaxis.axis_label = 'Date'
     p.yaxis.axis_label = 'Number of minutes spent'
@@ -208,8 +226,12 @@ def mostWatchedGenreMinutes(dataFrame):
 
     p = figure(plot_width=1200, plot_height=800,
                x_range=watchedGenres, y_range=(0, 20000))
-    p.vbar(x=watchedGenres, top=dataFrameGenreCount.Count, width=0.9)
+    p.vbar(x=watchedGenres, top=dataFrameGenreCount.Count,
+           width=0.9, fill_color='#ed0d0e', line_alpha=0)
 
+    p.background_fill_color = '#0b0106'
+    p.xgrid.grid_line_color = None
+    p.ygrid.grid_line_color = None
     p.title.text = 'My most watched genres on Netflix'
     p.xaxis.axis_label = 'Genres'
     p.yaxis.axis_label = 'Number of minutes'
@@ -225,8 +247,12 @@ def busiestDayMinutes(dataFrame):
 
     p = figure(plot_width=1200, plot_height=800,
                x_range=top15Day, y_range=(0, 700))
-    p.vbar(x=top15Day, top=top15DayCounts, width=0.9)
+    p.vbar(x=top15Day, top=top15DayCounts, width=0.9,
+           fill_color='#ed0d0e', line_alpha=0)
 
+    p.background_fill_color = '#0b0106'
+    p.xgrid.grid_line_color = None
+    p.ygrid.grid_line_color = None
     p.title.text = 'The days I watched Netflix the most'
     p.xaxis.axis_label = 'Date'
     p.yaxis.axis_label = 'Number of minutes'
@@ -240,8 +266,12 @@ def mostWatchedTypeMinutes(dataFrame):
 
     p = figure(plot_width=1200, plot_height=800,
                x_range=watchedType, y_range=(0, 47000))
-    p.vbar(x=watchedType, top=dataFrameTypeCount.Count, width=0.9)
+    p.vbar(x=watchedType, top=dataFrameTypeCount.Count,
+           width=0.9, fill_color='#ed0d0e', line_alpha=0)
 
+    p.background_fill_color = '#0b0106'
+    p.xgrid.grid_line_color = None
+    p.ygrid.grid_line_color = None
     p.title.text = 'How many minutes I spent watching series and movies'
     p.xaxis.axis_label = 'Series / Movies'
     p.yaxis.axis_label = 'Number of minutes'
