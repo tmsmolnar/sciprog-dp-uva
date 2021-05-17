@@ -11,7 +11,7 @@ This project is based on my Netflix viewing activity, since the beginning of my 
 
 The visualizations shows the watching habit, the distribution of series and movies, the genres, the amount of minutes spent on the platform and the ratings of the episodes for the chosen series
 
-For this project, I wrote many tools and created my package to help working with data and make generalize the codes, so that it can be re-used later by anyone who needs it. The tools can be found under the myTools folder.
+For this project, I wrote many tools and created my package to help working with data and generalize the codes, so that it can be re-used later by anyone who needs it. The tools can be found under the myTools folder.
 
 The original raw dataset can be found under folder datasets, alongside with a manually extended datasets that is used in the beginning of the project. The manually added information is later corrected in the notebook and visualizations with the help of the tools I created, by scraping the necessary information from iMDB, and changing the data.
 
