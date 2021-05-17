@@ -17,6 +17,17 @@ from myTools import scrapeBreakingBadRatings, scrapeHomelandRatings
 
 def watchingHabit(dataFrame):
 
+    """
+    Visualize the number of titles I watched based on my viewing activity dataset.
+
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame the user wants to visualize
+
+    Returns:
+        an interactive Bokeh visualization
+    """
+
     dataFrame = dataFrame.loc[::-1].reset_index(drop=True)
 
     genres = dataFrame['Genre'].unique()
@@ -63,6 +74,17 @@ def watchingHabit(dataFrame):
 
 def mostWatchedGenre(dataFrame):
 
+    """
+    Visualize the number of titles I watched in a given genre based on my viewing activity dataset.
+
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame the user wants to visualize
+
+    Returns:
+        a Bokeh visualization
+    """
+
     dataFrameGenreCount = titlePerGenre(dataFrame)
     watchedGenres = list(dataFrameGenreCount.index)
 
@@ -82,6 +104,17 @@ def mostWatchedGenre(dataFrame):
 
 
 def busiestDay(dataFrame):
+
+    """
+    Visualize on which days I watched the most titles, based on my viewing activity dataset.
+
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame the user wants to visualize
+
+    Returns:
+        a Bokeh visualization
+    """
 
     dataFrameDailyCounts = episodePerDay(dataFrame)
     top20Day = dataFrameDailyCounts.index[0:21]
@@ -105,6 +138,17 @@ def busiestDay(dataFrame):
 
 def mostWatchedType(dataFrame):
 
+    """
+    Visualize how many title of series and movies I watched based on my viewing activity dataset.
+
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame the user wants to visualize
+
+    Returns:
+        a Bokeh visualization
+    """
+
     dataFrameTypeCount = titleType(dataFrame)
     watchedType = list(dataFrameTypeCount.index)
 
@@ -124,6 +168,17 @@ def mostWatchedType(dataFrame):
 
 
 def mostWatchedTypeUnique(dataFrame):
+
+    """
+    Visualize how many unqiue title of series and movies I watched based on my viewing activity dataset.
+
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame the user wants to visualize
+
+    Returns:
+        a Bokeh visualization
+    """
 
     dataFrameTypeUnique = titleTypeUnique(dataFrame)
 
@@ -145,6 +200,16 @@ def mostWatchedTypeUnique(dataFrame):
 
 def heatMapBreakingBad():
 
+    """
+    Visualize Breaking Bad's episodes' ratings on a heatmap
+
+    Parameters:
+        None
+
+    Returns:
+        a Seaborn visualization
+    """
+
     breakingBadRatings = scrapeBreakingBadRatings()
     breakingBadHeatMap = breakingBadRatings.pivot(
         "episode", "season", "userRatings")
@@ -155,6 +220,16 @@ def heatMapBreakingBad():
 
 def heatMapHomeland():
 
+    """
+    Visualize Homeland's episodes' ratings on a heatmap
+
+    Parameters:
+        None
+
+    Returns:
+        a Seaborn visualization
+    """
+
     homelandRatings = scrapeHomelandRatings()
     homelandHeatMap = homelandRatings.pivot("episode", "season", "userRatings")
     plt.figure(figsize=(10, 9))
@@ -164,7 +239,18 @@ def heatMapHomeland():
 
 
 def watchingHabitMinutes(dataFrame):
-    
+
+    """
+    Visualize the number of minutes I watched based on my viewing activity dataset.
+
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame the user wants to visualize
+
+    Returns:
+        an interactive Bokeh visualization
+    """
+
     #dataFrame = dataFrame.loc[::-1].reset_index(drop=True)
 
     genres = dataFrame['Genre'].unique()
@@ -220,7 +306,18 @@ def watchingHabitMinutes(dataFrame):
     return show(p)
 
 def mostWatchedGenreMinutes(dataFrame):
-    
+
+    """
+    Visualize the number of minutes I watched in a given genre based on my viewing activity dataset and scraped information.
+
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame the user wants to visualize
+
+    Returns:
+        an interactive Bokeh visualization
+    """
+
     dataFrameGenreCount = minutesPerGenre(dataFrame)
     watchedGenres = list(dataFrameGenreCount.index)
 
@@ -239,7 +336,18 @@ def mostWatchedGenreMinutes(dataFrame):
     return show(p)
 
 def busiestDayMinutes(dataFrame):
-    
+
+    """
+    Visualize on which days I spent the most time on Netflix based on my viewing activity dataset and scraped information
+
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame the user wants to visualize
+
+    Returns:
+        a Bokeh visualization
+    """
+
     dataFrameDailyCounts = minutesPerDay(dataFrame)
     top15Day = dataFrameDailyCounts['Date'][0:16]
     top15Day = list(top15Day)
@@ -260,7 +368,17 @@ def busiestDayMinutes(dataFrame):
     return show(p)
 
 def mostWatchedTypeMinutes(dataFrame):
-    
+
+    """
+    Visualize the number of minutes I spent watching series and movie based on my viewing activity dataset and scraped information
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame the user wants to visualize
+
+    Returns:
+        a Bokeh visualization
+    """
+
     dataFrameTypeCount = minutesPerTitleType(dataFrame)
     watchedType = list(dataFrameTypeCount.index)
 

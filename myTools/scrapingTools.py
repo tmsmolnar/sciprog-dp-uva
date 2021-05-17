@@ -11,6 +11,16 @@ from bs4 import BeautifulSoup
 
 def scrapeBreakingBadRatings():
 
+    """
+    Scrape the ratings of Breaking Bad's episodes.
+
+    Parameters:
+        None
+
+    Returns:
+        a dataFrame
+    """
+
     breakingBadRatings = []
 
     for season in range(1, 6):
@@ -35,6 +45,16 @@ def scrapeBreakingBadRatings():
 
 def scrapeHomelandRatings():
 
+    """
+    Scrape the ratings of Homeland's episodes.
+
+    Parameters:
+        None
+
+    Returns:
+        a dataFrame
+    """
+
     homelandRatings = []
 
     for season in range(1, 9):
@@ -58,6 +78,16 @@ def scrapeHomelandRatings():
 
 
 def scrapeMovies():
+
+    """
+    Scrape the necessary information, such as runtimes and genres, of the movies I watched on Netflix from an iMDB list
+
+    Parameters:
+        None
+
+    Returns:
+        a dataFrame
+    """
 
     moviesData = []
 
@@ -92,6 +122,16 @@ def scrapeMovies():
 
 
 def scrapeSeries():
+
+    """
+    Scrape the necessary information, such as runtimes and genres, of the series I watched on Netflix from an iMDB list
+
+    Parameters:
+        None
+
+    Returns:
+        a dataFrame
+    """
 
     seriesData = []
 

@@ -9,6 +9,17 @@ from myTools import scrapeSeries, scrapeMovies
 
 def readNetflixDataset(filename):
 
+    """
+    Load the dataset, and split the title column into title, season and episode columns.
+
+    Parameters:
+        filename: string
+            The name of the file or the path of the file the user wants to load
+
+    Returns:
+        a dataFrame
+    """
+
     dataFrame = pd.read_excel(filename)
     dataFrame = dataFrame.rename(columns={'Title':'Original Title'})
     dataFrame = dataFrame.join(dataFrame['Original Title'].str.split(':', expand=True).add_prefix('Original Title'))
@@ -22,6 +33,18 @@ def readNetflixDataset(filename):
 
 def episodePerDay(dataFrame):
 
+    """
+    Count how many times a date exists in the dataFrame.
+    Used for busiestDay visualization
+
+    Parameters:
+        dataFrame: string
+            The name of the dataFrame the user wants to work with.
+
+    Returns:
+        a dataFrame
+    """
+
     dataFrameDailyCounts = dataFrame['Date'].value_counts()
     dataFrameDailyCounts = dataFrameDailyCounts.to_frame()
     dataFrameDailyCounts = dataFrameDailyCounts.rename(
@@ -31,6 +54,18 @@ def episodePerDay(dataFrame):
 
 
 def titlePerGenre(dataFrame):
+
+    """
+    Count how many times a genre exists in the dataFrame.
+    Used for mostWatchedGenre visualization
+
+    Parameters:
+        dataFrame: string
+            The name of the dataFrame the user wants to work with.
+
+    Returns:
+        a dataFrame
+    """
 
     dataFrameGenreCount = dataFrame['Genre'].value_counts()
     dataFrameGenreCount = dataFrameGenreCount.to_frame()
@@ -42,6 +77,18 @@ def titlePerGenre(dataFrame):
 
 def titleType(dataFrame):
 
+    """
+    Count how many series and movies exists in the dataFrame.
+    Used for mostWatchedType visualization
+
+    Parameters:
+        dataFrame: string
+            The name of the dataFrame the user wants to work with.
+
+    Returns:
+        a dataFrame
+    """
+
     dataFrameTypeCount = dataFrame['Series / Movie'].value_counts()
     dataFrameTypeCount = dataFrameTypeCount.to_frame()
     dataFrameTypeCount = dataFrameTypeCount.rename(
@@ -50,6 +97,18 @@ def titleType(dataFrame):
     return dataFrameTypeCount
 
 def titleTypeUnique(dataFrame):
+
+    """
+    Count how many unique series and movies exists in the dataFrame.
+    Used for mostWatchedTypeUnique visualization
+
+    Parameters:
+        dataFrame: string
+            The name of the dataFrame the user wants to work with.
+
+    Returns:
+        a dataFrame
+    """
 
     dataFrameTypeUniqueSeries = dataFrame.loc[dataFrame['Series / Movie'] == 'Series']
     dataFrameTypeUniqueSeries = dataFrameTypeUniqueSeries['Title'].unique()
@@ -63,6 +122,17 @@ def titleTypeUnique(dataFrame):
     return dataFrameTypeUniqueTitles
 
 def seriesData(dataFrame):
+
+    """
+    Create a new dataFrame containing only the series, with all the scraped informations, such as runtimes and genres.
+    
+    Parameters:
+        dataFrame: string
+            The name of the dataFrame the user wants to work with.
+
+    Returns:
+        a new dataFrame
+    """
 
     onlySeries = dataFrame.loc[dataFrame['Series / Movie'] == 'Series']
     onlySeries = onlySeries['Title'].unique()
@@ -97,6 +167,17 @@ def seriesData(dataFrame):
 
 def moviesData(dataFrame):
 
+    """
+    Create a new dataFrame containing only the movies, with all the scraped informations, such as runtimes and genres.
+    
+    Parameters:
+        dataFrame: string
+            The name of the dataFrame the user wants to work with.
+
+    Returns:
+        a new dataFrame
+    """
+
     dfOnlyMovies = dataFrame.loc[dataFrame['Series / Movie'] == 'Movie']
     dfMovieData = scrapeMovies()
     dfOnlyMovies.index = dfMovieData.index
@@ -117,6 +198,19 @@ def moviesData(dataFrame):
 
 def concatSeriesMovies(dataFrame1, dataFrame2):
 
+    """
+    Join, concat two dataFrames
+    
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame the user wants to concat.
+        dataFrame2: string
+            The name of the dataFrame the user wants to concat.
+
+    Returns:
+        a new dataFrame
+    """
+
     concatedDataFrame = pd.concat([dataFrame1, dataFrame2], ignore_index=True)
 
     return concatedDataFrame
@@ -124,13 +218,37 @@ def concatSeriesMovies(dataFrame1, dataFrame2):
 
 def cleanDataFrame(dataFrame):
 
+    """
+    Clean a dataFrame and use only the necessary columns for the visualizations.
+    
+    Parameters:
+        dataFrame: string
+            The name of the dataFrame the user wants to work with.
+
+    Returns:
+        a dataFrame
+    """
+
     cleanDataFrame = dataFrame[['Original Title', 'Date', 'Title', 'Season', 'Episode title', 'Episode second title']]
 
     return cleanDataFrame
 
 
 def mapRuntime(dataFrame1, dataFrame2):
+
+    """
+    Add the scraped runtimes of the titles in the viewing activity dataframe
     
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame to which the user wants to add the runtime
+        dataFrame2: string
+            The name of the dataFrame containging the runtimes.
+
+    Returns:
+        a dataFrame
+    """
+
     dataFrame1['Runtime'] = dataFrame1.Title.map(
         dataFrame2.set_index('Title')['runtime'].to_dict())
 
@@ -138,7 +256,20 @@ def mapRuntime(dataFrame1, dataFrame2):
 
 
 def mapGenre(dataFrame1, dataFrame2):
-    
+
+    """
+    Add the scraped genres of the titles in the viewing activity dataframe
+
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame to which the user wants to add the genres
+        dataFrame2: string
+            The name of the dataFrame containging the genres.
+
+    Returns:
+        a dataFrame
+    """
+
     dataFrame1['Genre'] = dataFrame1.Title.map(
         dataFrame2.set_index('Title')['genre'].to_dict())
 
@@ -146,7 +277,20 @@ def mapGenre(dataFrame1, dataFrame2):
 
 
 def mapType(dataFrame1, dataFrame2):
-    
+
+    """
+    Add the "scraped" type of the titles in the viewing activity dataframe
+
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame to which the user wants to add the type of the title
+        dataFrame2: string
+            The name of the dataFrame containging the types.
+
+    Returns:
+        a dataFrame
+    """
+
     dataFrame1['S/M'] = dataFrame1.Title.map(
         dataFrame2.set_index('Title')['S/M'].to_dict())
 
@@ -154,6 +298,17 @@ def mapType(dataFrame1, dataFrame2):
 
 
 def addSpentMinutes(dataFrame):
+
+    """
+    Create a new column with the amount of spent minutes on Netflix, by adding the current row's runtime's value to the column
+
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame in which the user wants to calculate the spent minutes
+
+    Returns:
+        a dataFrame
+    """
 
     dataFrame = dataFrame.rename(columns={'S/M': 'Series / Movie'})
     dataFrame['Spent Minutes'] = 0
@@ -166,7 +321,19 @@ def addSpentMinutes(dataFrame):
 
 
 def minutesPerDay(dataFrame):
-    
+
+    """
+    Calculate the number of minutes spent on Netflix each day
+    Used for busiestDayMinutes visualization
+
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame the user wants to work with
+
+    Returns:
+        a dataFrame
+    """
+
     dataFrame = dataFrame.groupby('Date')['Runtime'].sum()
     dataFrame = dataFrame.to_frame()
     dataFrame['Date'] = dataFrame.index
@@ -179,6 +346,18 @@ def minutesPerDay(dataFrame):
 
 def minutesPerGenre(dataFrame):
 
+    """
+    Calculate the number of minutes spent by watching each genre
+    Used for mostWatchedGenreMinutes visualization
+
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame the user wants to work with
+
+    Returns:
+        a dataFrame
+    """
+
     dataFrame = dataFrame.join(dataFrame['Genre'].str.split(' ', expand=True).add_prefix('Genre clean'))
     dataFrame = dataFrame.groupby('Genre clean0')['Runtime'].sum()
     dataFrame = dataFrame.to_frame()
@@ -189,7 +368,19 @@ def minutesPerGenre(dataFrame):
     return dataFrame
 
 def minutesPerTitleType(dataFrame):
-    
+
+    """
+    Calculate the number of minutes spent watching title types.
+    Used for mostWatchedTypeMinutes visualization
+
+    Parameters:
+        dataFrame1: string
+            The name of the dataFrame the user wants to work with
+
+    Returns:
+        a dataFrame
+    """
+
     dataFrame = dataFrame.groupby('Series / Movie')['Runtime'].sum()
     dataFrame = dataFrame.to_frame()
     dataFrame = dataFrame.rename(
