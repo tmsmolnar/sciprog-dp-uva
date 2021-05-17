@@ -9,7 +9,7 @@ Tamás Molnár's final project for the Data Processing course at the Universitei
 
 This project is based on my Netflix viewing activity, since the beginning of my subscription, until 2021-04-29
 
-The visualizations shows the watching habit, the distribution of series and movies, the genres, the amount of minutes spent on the platform and the ratings of the episode for the chosen series
+The visualizations shows the watching habit, the distribution of series and movies, the genres, the amount of minutes spent on the platform and the ratings of the episodes for the chosen series
 
 For this project, I wrote many tools and created my package to help working with data and make generalize the codes, so that it can be re-used later by anyone who needs it. The tools can be found under the myTools folder.
 
