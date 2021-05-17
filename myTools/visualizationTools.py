@@ -1,7 +1,7 @@
 # Tamás Molnár
 # SP - Data Processing @ UvA
 # Final Project
-# visulizationTools.py
+# visualizationTools.py
 
 import pandas as pd
 import seaborn as sns
